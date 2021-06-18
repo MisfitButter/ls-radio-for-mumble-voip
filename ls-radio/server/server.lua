@@ -1,10 +1,10 @@
-ESX               = nil
+QBCore               = nil
 
-TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
 
 ESX.RegisterUsableItem('radio', function(source)
 
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = QBCore.Functions.GetPlayer(source)
 	TriggerClientEvent('ls-radio:use', source)
 
 end)
@@ -15,9 +15,9 @@ end)
 Citizen.CreateThread(function()
   while true do
     Citizen.Wait(1000)
-    local xPlayers = ESX.GetPlayers()
+    local xPlayers = QBCore.Functions.GetPlayers()
     for i=1, #xPlayers, 1 do
-        local xPlayer = ESX.GetPlayerFromId(xPlayers[i])
+        local xPlayer = QBCore.Functions.GetPlayer(xPlayers[i])
           if xPlayer ~= nil then
               if xPlayer.getInventoryItem('radio').count == 0 then
                 local source = xPlayers[i]
