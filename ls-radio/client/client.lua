@@ -1,25 +1,24 @@
 
---===============================================================================
---=== Edited By skiddle pumpkin#0001 4 MERCURY RP================================
---===================== Direitos Reservados ao Mercury RP =======================
---===============================================================================
+ -- 
+-- Converted to QBCore + PMA Voice --- MisfitButter 
+ -- 
 
 
--- ESX
 
-ESX = nil
+
+QBCore = nil
 local PlayerData                = {}
 local phoneProp = 0
 
 Citizen.CreateThread(function()
-  while ESX == nil do
-    TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+  while QBCore == nil do
+    TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
     Citizen.Wait(10)
 	end
 end)
 
-RegisterNetEvent('esx:setJob')
-AddEventHandler('esx:setJob', function(job)
+RegisterNetEvent('QBCore:Client:OnJobUpdate')
+AddEventHandler('QBCore:Client:OnJobUpdate', function(job)
   PlayerData.job = job
 end)
 
@@ -108,7 +107,7 @@ end, false) ]]
 
 RegisterNUICallback('joinRadio', function(data, cb)
     local _source = source
-    local PlayerData = ESX.GetPlayerData(_source)
+    local PlayerData = QBCore.Functions.GetPlayerData(_source)
     local playerName = GetPlayerName(PlayerId())
 --[[     local getPlayerRadioChannel = exports.tokovoip_script:getPlayerData(playerName, "radio:channel") ]]
 
@@ -119,7 +118,7 @@ RegisterNUICallback('joinRadio', function(data, cb)
       end
         if tonumber(data.channel) <= Config.RestrictedChannels then
           if(PlayerData.job.name == 'police' or PlayerData.job.name == 'ambulance') then
-            exports["mumble-voip"]:SetRadioChannel(tonumber(data.channel))
+            exports["pma-voice"]:SetRadioChannel(tonumber(data.channel))
             exports['mythic_notify']:SendAlert('inform', Config.messages['joined_to_radio'] .. data.channel .. '.00 MHz </b>')
           elseif not (PlayerData.job.name == 'police' or PlayerData.job.name == 'ambulance') then
             --- info że nie możesz dołączyć bo nie jesteś policjantem
@@ -127,7 +126,7 @@ RegisterNUICallback('joinRadio', function(data, cb)
           end
         end
         if tonumber(data.channel) > Config.RestrictedChannels then
-          exports["mumble-voip"]:SetRadioChannel(tonumber(data.channel))
+          exports["pma-voice"]:SetRadioChannel(tonumber(data.channel))
           exports['mythic_notify']:SendAlert('inform', Config.messages['joined_to_radio'] .. data.channel .. '.00 MHz </b>')
         end
       else
@@ -152,7 +151,7 @@ RegisterNUICallback('leaveRadio', function(data, cb)
    -- if getPlayerRadioChannel == "nil" then
     --  exports['mythic_notify']:SendAlert('inform', Config.messages['not_on_radio'])
      --   else
-          exports["mumble-voip"]:SetRadioChannel(0)
+          exports["pma-voice"]:SetRadioChannel(0)
          -- exports['mythic_notify']:SendAlert('inform', Config.messages['you_leave'] .. getPlayerRadioChannel .. '.00 MHz </b>')
    -- end
 
@@ -181,7 +180,7 @@ AddEventHandler('ls-radio:onRadioDrop', function()
   local playerName = GetPlayerName(PlayerId())
 --[[   local getPlayerRadioChannel = exports.tokovoip_script:getPlayerData(playerName, "radio:channel") ]]
   --if getPlayerRadioChannel ~= "nil" then
-    exports["mumble-voip"]:SetRadioChannel(0)
+    exports["pma-voice"]:SetRadioChannel(0)
     --exports['mythic_notify']:SendAlert('inform', Config.messages['you_leave'] .. getPlayerRadioChannel .. '.00 MHz </b>')
  -- end
 end)
